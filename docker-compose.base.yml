@@ -1,0 +1,17 @@
+version: '2'
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: joepurdy/dockpress
+    volumes:
+     - ./src:/var/www/html
+    networks:
+     - wpnet
+  mysql:
+    image: mariadb:10.1
+    volumes:
+     - mysqldata:/var/lib/mysql
+    networks:
+     - wpnet
