@@ -29,7 +29,7 @@ DockPress is a dockerized version of WordPress inspired heavily by the Roots.io 
   * `WP_SITEURL` - Full URL to WordPress including subdirectory (http://example.dev/wp)
   * `AUTH_KEY`, `SECURE_AUTH_KEY`, `LOGGED_IN_KEY`, `NONCE_KEY`, `AUTH_SALT`, `SECURE_AUTH_SALT`, `LOGGED_IN_SALT`, `NONCE_SALT` - Generate these at https://roots.io/salts.html
 
-The `develop` script sets defaults for the DB environment variables so if you aren't using custom values you should specify the following values:
+The [develop script](https://github.com/joepurdy/DockPress/blob/master/develop) sets defaults for the DB environment variables so if you aren't using custom values you should specify the following values:
 ```
 DB_NAME=wordpress
 DB_USER=wordpress
