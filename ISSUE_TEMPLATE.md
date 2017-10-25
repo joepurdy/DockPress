@@ -1,5 +1,5 @@
 <!--- Provide a general summary of the feature being requested or bug in the Title above -->
-<!---  Note: for support questions, please use stackoverflow**. This repository's issues are reserved for feature requests and bug reports.  -->
+<!---  Note: for support questions, please use stackoverflow. This repository's issues are reserved for feature requests and bug reports.  -->
 
 ## I'm submitting a...
   - [ ] bug report
