@@ -19,7 +19,7 @@ DockPress is a dockerized version of WordPress inspired heavily by the Roots.io 
 
   `./develop init your-theme-name`
 
-2. Update environment variables in `src/.env`  file:
+2. Update environment variables in `src/.env` file:
   * `DB_NAME` - Database name
   * `DB_USER` - Database user
   * `DB_PASSWORD` - Database password
@@ -27,7 +27,15 @@ DockPress is a dockerized version of WordPress inspired heavily by the Roots.io 
   * `WP_ENV` - Set to environment (`development`, `staging`, `production`)
   * `WP_HOME` - Full URL to WordPress home (http://example.dev)
   * `WP_SITEURL` - Full URL to WordPress including subdirectory (http://example.dev/wp)
-  * `AUTH_KEY`, `SECURE_AUTH_KEY`, `LOGGED_IN_KEY`, `NONCE_KEY`, `AUTH_SALT`, `SECURE_AUTH_SALT`, `LOGGED_IN_SALT`, `NONCE_SALT`
+  * `AUTH_KEY`, `SECURE_AUTH_KEY`, `LOGGED_IN_KEY`, `NONCE_KEY`, `AUTH_SALT`, `SECURE_AUTH_SALT`, `LOGGED_IN_SALT`, `NONCE_SALT` - Generate these at https://roots.io/salts.html
+
+The `develop` script sets defaults for the DB environment variables so if you aren't using custom values you should specify the following values:
+```
+DB_NAME=wordpress
+DB_USER=wordpress
+DB_PASSWORD=secret
+DB_HOST=mysql
+```
 
 3. Bring the Docker environment online with `./develop up -d`
 
