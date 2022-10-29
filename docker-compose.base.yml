@@ -4,7 +4,6 @@ services:
     build:
       context: ./docker/app
       dockerfile: Dockerfile
-    image: joepurdy/dockpress
     volumes:
      - ./src:/var/www/html
     networks:

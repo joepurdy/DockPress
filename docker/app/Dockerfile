@@ -1,39 +1,41 @@
-FROM ubuntu:16.04
+FROM ubuntu:22.04
 
-MAINTAINER Joe Purdy <hello@joepurdy.io>
+LABEL author="Joe Purdy <joe@purdy.dev>"
 
 # Install locales
-RUN apt update && apt install -y locales
+RUN apt-get update && apt-get install -y locales
 RUN locale-gen en_US.UTF-8
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+ENV TZ=UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Get latest version of software-properties-common first
-RUN apt update && apt upgrade -y && apt install -y software-properties-common
+RUN apt-get update && apt-get upgrade -y && apt-get install -y software-properties-common apt-transport-https
 
-# Pre-add php7 repo
+# Pre-add php8 repo
 RUN add-apt-repository -y ppa:ondrej/php \
-    && apt update
+    && apt-get update
 
 # Basic Requirements
-RUN apt update \
-    && apt install -y nginx curl unzip git supervisor wget python-pip sqlite3
+RUN apt-get update \
+    && apt-get install -y nginx curl unzip git supervisor wget python-pip sqlite3
 
 # PHP Requirements
-RUN apt update \
-    && apt install -y php7.1 php7.1-fpm php7.1-cli php7.1-mcrypt php7.1-gd php7.1-mysql \
-    php7.1-imap php-memcached php7.1-mbstring php7.1-xml php7.1-curl \
-    php7.1-sqlite3
+RUN apt-get update \
+    && apt-get install -y php8.1 php8.1-fpm php8.1-cli php8.1-mcrypt php8.1-gd php8.1-mysql \
+    php8.1-imap php-memcached php8.1-mbstring php8.1-xml php8.1-curl \
+    php8.1-sqlite3
 
 # Wordpress Requirements
-RUN apt update \
-    && apt install -y libnuma-dev php7.1-intl php-pear php7.1-imagick \
-    php7.1-ps php7.1-pspell php7.1-recode php7.1-sqlite php7.1-tidy php7.1-xmlrpc php7.1-xsl
+RUN apt-get update \
+    && apt-get install -y libnuma-dev php8.1-intl php-pear php8.1-imagick \
+    php8.1-ps php8.1-pspell php8.1-tidy php8.1-xmlrpc php8.1-xsl
 
 # Install Composer
-RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
+COPY --from=composer/composer /usr/bin/composer /usr/bin/composer
 
 # Install WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
@@ -51,10 +53,10 @@ RUN mkdir /run/php \
     && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY default /etc/nginx/sites-available/default
-COPY php-fpm.conf /etc/php/7.1/fpm/php-fpm.conf
+COPY php-fpm.conf /etc/php/8.1/fpm/php-fpm.conf
 
 EXPOSE 80
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

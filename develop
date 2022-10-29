@@ -32,6 +32,14 @@ if [ $# -gt 0 ]; then
           app \
           wp --allow-root "$@"
 
+  # If "shell" is used, pass-thru to interactive shell
+  elif [ "$1" == "shell" ]; then
+      shift 1
+      $COMPOSE run --rm $TTY \
+          -w /var/www/html \
+          app \
+          /bin/bash
+
   # if "init" is used, make the src directory and
   # install latest version of Bedrock. Afterwards
   # install a Sage theme into Bedrock's theme folder
@@ -45,10 +53,16 @@ if [ $# -gt 0 ]; then
         -w /var/www/html \
         app \
         composer create-project roots/bedrock .
+
+    $COMPOSE run --rm $TTY \
+        -w /var/www/html \
+        app \
+        composer require roots/acorn
+
     $COMPOSE run --rm $TTY \
         -w /var/www/html/web/app/themes \
         app \
-        composer create-project roots/sage $1 dev-master
+        composer create-project roots/sage "$1" dev-main
 
   # Else, pass-thru args to docker-compose
   else
